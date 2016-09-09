@@ -4,30 +4,21 @@ feature 'signing in' do
 
   let!(:user) do
     User.create(username: 'Santa' , email: 'santa@northpole.com',
-                password: '123456', password_confirmation: '123456')
+                password: 'christmas', password_confirmation: 'christmas')
   end
 
   scenario 'user can sign in' do
-    visit '/sessions/new'
-    fill_in('email', with: 'santa@northpole.com')
-    fill_in('password', with: '123456')
-    click_button 'Sign in'
+    sign_in('santa@northpole.com','christmas')
     expect(page).to have_content('Welcome, Santa')
   end
 
   scenario 'user cannot sign in with wrong email' do
-    visit '/sessions/new'
-    fill_in('email', with: 'rudolph@northpole.com')
-    fill_in('password', with: '123456')
-    click_button 'Sign in'
+    sign_in('rudolph@northpole.com','christmas')
     expect(page).to have_content('The email or password is incorrect')
   end
 
   scenario 'user cannot sign in with wrong password' do
-    visit '/sessions/new'
-    fill_in('email', with: 'santa@northpole.com')
-    fill_in('password', with: 'santa')
-    click_button 'Sign in'
+    sign_in('santa@northpole.com', 'reindeer' )
     expect(page).to have_content('The email or password is incorrect')
   end
 end
