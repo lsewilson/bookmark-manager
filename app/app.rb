@@ -72,11 +72,18 @@ class Bookmark < Sinatra::Base
     user = User.authenticate(params[:email], params[:password])
     if user
       session[:user_id] = user.id
+      session[:username] = user.username
       redirect('/links')
     else
       flash.now[:errors] = ['The email or password is incorrect']
       erb :'sessions/new'
     end
+  end
+
+  post '/sessions/end' do
+    flash[:notice] = "Goodbye, #{session[:username]}"
+    session.clear
+    redirect('/links')
   end
 
   # start the server if ruby file executed directly

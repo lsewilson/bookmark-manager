@@ -1,4 +1,4 @@
-
+module Helpers
   def add_multiple_tags
     visit '/links/new'
     fill_in('title', with: 'Codecademy')
@@ -26,3 +26,4 @@
     fill_in('password_confirmation', with: password_confirmation)
     click_button 'Sign up'
   end
+end
