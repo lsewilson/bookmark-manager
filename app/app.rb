@@ -26,7 +26,6 @@ class Bookmark < Sinatra::Base
   end
 
   get '/links/new' do
-    @user = User.new
     erb :'links/new'
   end
 
@@ -47,21 +46,20 @@ class Bookmark < Sinatra::Base
   end
 
   get '/users/new' do
+    @user = User.new
     erb :'/users/new'
   end
 
   post '/users' do
-    @user = User.new(username: params[:username],
+    @user = User.create(username: params[:username],
                         email: params[:email],
                         password: params[:password],
                         password_confirmation: params[:password_confirmation])
     if @user.save
       session[:user_id] = @user.id
-      redirect '/links'
+      redirect '/'
     else
-      flash.now[:error] = 'Password and confirmation password do not match'
-      flash.now[:username] = params[:username]
-      flash.now[:email] = params[:email]
+      flash.now[:errors] = @user.errors.full_messages
       erb :'users/new'
     end
   end
